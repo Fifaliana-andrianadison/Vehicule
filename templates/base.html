@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr" data-theme="light" data-sidebar-style="standard" data-sidebar-color="default" data-font-size="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VéhiGest{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-sidebar: #0f172a;
+            --bg-sidebar-hover: rgba(255,255,255,0.08);
+            --bg-sidebar-active: rgba(59,130,246,0.2);
+            --bg-header: #ffffff;
+            --bg-dropdown: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-sidebar: #cbd5e1;
+            --text-sidebar-active: #ffffff;
+            --text-sidebar-heading: #64748b;
+            --border-color: #e2e8f0;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1d4ed8;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.1);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --font-size: 16px;
+            --sidebar-width: 260px;
+            --sidebar-compact-width: 72px;
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0c1222;
+            --bg-card: #151d31;
+            --bg-sidebar: #080e1a;
+            --bg-sidebar-hover: rgba(255,255,255,0.06);
+            --bg-sidebar-active: rgba(59,130,246,0.25);
+            --bg-header: #151d31;
+            --bg-dropdown: #1a2338;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-sidebar: #8896ab;
+            --text-sidebar-active: #ffffff;
+            --text-sidebar-heading: #475569;
+            --border-color: #1e293b;
+            --accent: #3b82f6;
+            --accent-light: rgba(59,130,246,0.15);
+            --accent-dark: #60a5fa;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        [data-font-size="small"] { --font-size: 14px; }
+        [data-font-size="medium"] { --font-size: 16px; }
+        [data-font-size="large"] { --font-size: 18px; }
+
+        [data-sidebar-color="default"] { --sidebar-accent: #3b82f6; --sidebar-accent-bg: rgba(59,130,246,0.15); }
+        [data-sidebar-color="green"] { --sidebar-accent: #22c55e; --sidebar-accent-bg: rgba(34,197,94,0.15); }
+        [data-sidebar-color="purple"] { --sidebar-accent: #a855f7; --sidebar-accent-bg: rgba(168,85,247,0.15); }
+        [data-sidebar-color="orange"] { --sidebar-accent: #f97316; --sidebar-accent-bg: rgba(249,115,22,0.15); }
+        [data-sidebar-color="rose"] { --sidebar-accent: #e11d48; --sidebar-accent-bg: rgba(225,29,72,0.15); }
+        [data-sidebar-color="teal"] { --sidebar-accent: #14b8a6; --sidebar-accent-bg: rgba(20,184,166,0.15); }
+        [data-sidebar-color="indigo"] { --sidebar-accent: #6366f1; --sidebar-accent-bg: rgba(99,102,241,0.15); }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { font-size: var(--font-size); }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: background var(--transition-speed), color var(--transition-speed);
+            min-height: 100vh;
+        }
+
+        .app-layout { display: flex; height: 100vh; overflow: hidden; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: width var(--transition-speed), background var(--transition-speed);
+            position: relative;
+            z-index: 40;
+            overflow: hidden;
+        }
+        .sidebar-header {
+            padding: 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-shrink: 0;
+        }
+        .sidebar-logo-icon {
+            width: 36px; height: 36px;
+            background: var(--sidebar-accent);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: background var(--transition-speed);
+        }
+        .sidebar-logo-icon svg { width: 20px; height: 20px; fill: white; }
+        .sidebar-brand {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .sidebar-brand span { color: var(--sidebar-accent); transition: color var(--transition-speed); }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .sidebar-nav::-webkit-scrollbar { width: 3px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+        .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+
+        .sidebar-section-title {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-sidebar-heading);
+            padding: 16px 12px 6px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-sidebar);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+            position: relative;
+        }
+        .sidebar-link:hover {
+            background: var(--bg-sidebar-hover);
+            color: #fff;
+        }
+        .sidebar-link.active {
+            background: var(--sidebar-accent-bg);
+            color: var(--text-sidebar-active);
+        }
+        .sidebar-link.active::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background: var(--sidebar-accent);
+            border-radius: 0 3px 3px 0;
+            transition: background var(--transition-speed);
+        }
+        .sidebar-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .sidebar-link .link-text { overflow: hidden; }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Sidebar styles */
+        [data-sidebar-style="compact"] .sidebar { width: var(--sidebar-compact-width); }
+        [data-sidebar-style="compact"] .sidebar-brand,
+        [data-sidebar-style="compact"] .sidebar-section-title,
+        [data-sidebar-style="compact"] .link-text,
+        [data-sidebar-style="compact"] .sidebar-user-info { display: none; }
+        [data-sidebar-style="compact"] .sidebar-link { justify-content: center; padding: 12px; }
+        [data-sidebar-style="compact"] .sidebar-link i { margin: 0; }
+        [data-sidebar-style="compact"] .sidebar-header { justify-content: center; padding: 16px 12px; }
+        [data-sidebar-style="compact"] .sidebar-logo-icon { width: 32px; height: 32px; }
+        [data-sidebar-style="compact"] .sidebar-logo-icon svg { width: 16px; height: 16px; }
+        [data-sidebar-style="compact"] .sidebar-footer { display: flex; justify-content: center; }
+        [data-sidebar-style="compact"] .settings-btn span { display: none; }
+
+        [data-sidebar-style="icons"] .sidebar { width: 56px; }
+        [data-sidebar-style="icons"] .sidebar-header,
+        [data-sidebar-style="icons"] .sidebar-brand,
+        [data-sidebar-style="icons"] .sidebar-section-title,
+        [data-sidebar-style="icons"] .link-text,
+        [data-sidebar-style="icons"] .sidebar-user-info { display: none; }
+        [data-sidebar-style="icons"] .sidebar-link { justify-content: center; padding: 10px; font-size: 1.1rem; }
+        [data-sidebar-style="icons"] .sidebar-link i { margin: 0; }
+        [data-sidebar-style="icons"] .sidebar-nav { padding: 8px 6px; gap: 4px; align-items: center; }
+        [data-sidebar-style="icons"] .sidebar-footer { display: flex; justify-content: center; padding: 8px; }
+        [data-sidebar-style="icons"] .settings-btn { padding: 8px; }
+        [data-sidebar-style="icons"] .settings-btn span { display: none; }
+        [data-sidebar-style="icons"] .sidebar-link.active::before { display: none; }
+        [data-sidebar-style="icons"] .sidebar-link.active { outline: 2px solid var(--sidebar-accent); outline-offset: -2px; }
+
+        [data-sidebar-style="floating"] .sidebar {
+            margin: 12px;
+            border-radius: 16px;
+            height: calc(100vh - 24px);
+            box-shadow: var(--shadow-lg);
+        }
+        [data-sidebar-style="floating"] .sidebar-nav { padding: 8px; }
+        [data-sidebar-style="floating"] .sidebar-link { border-radius: 10px; }
+        [data-sidebar-style="floating"] .sidebar-link.active::before { display: none; }
+        [data-sidebar-style="floating"] .sidebar-link.active { background: var(--sidebar-accent-bg); }
+        [data-sidebar-style="floating"] .app-content { border-radius: 16px; }
+        [data-sidebar-style="floating"] .sidebar-header { padding: 16px; }
+
+        /* MAIN CONTENT */
+        .app-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg-body);
+            transition: background var(--transition-speed);
+        }
+
+        .topbar {
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            transition: background var(--transition-speed), border-color var(--transition-speed);
+            box-shadow: var(--shadow);
+        }
+        .topbar-left { display: flex; align-items: center; gap: 16px; }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+        .main-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .main-area::-webkit-scrollbar { width: 6px; }
+        .main-area::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        .main-area::-webkit-scrollbar-track { background: transparent; }
+
+        /* Mobile toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+        }
+        .mobile-toggle:hover { background: var(--accent-light); }
+
+        /* SETTINGS DRAWER */
+        .settings-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 100;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .settings-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .settings-drawer {
+            position: fixed;
+            top: 0; right: 0;
+            width: 340px;
+            height: 100vh;
+            background: var(--bg-card);
+            z-index: 101;
+            transform: translateX(100%);
+            transition: transform 0.3s ease, background var(--transition-speed);
+            box-shadow: -4px 0 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--border-color);
+        }
+        .settings-drawer.open { transform: translateX(0); }
+
+        .settings-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .settings-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .settings-close {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+        }
+        .settings-close:hover { background: var(--accent-light); color: var(--text-primary); }
+
+        .settings-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .settings-body::-webkit-scrollbar { width: 4px; }
+        .settings-body::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+
+        .settings-group { margin-bottom: 28px; }
+        .settings-group:last-child { margin-bottom: 0; }
+        .settings-group h3 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin: 0 0 12px;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+        .setting-row label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .theme-btns { display: flex; gap: 6px; }
+        .theme-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+        }
+        .theme-btn:hover { border-color: var(--accent); }
+        .theme-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+        .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+        .color-swatch {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .color-swatch:hover { transform: scale(1.15); }
+        .color-swatch.active { border-color: var(--text-primary); box-shadow: 0 0 0 2px var(--bg-card); }
+
+        .sidebar-style-options { display: flex; gap: 8px; }
+        .sidebar-style-btn {
+            flex: 1;
+            padding: 10px 6px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .sidebar-style-btn:hover { border-color: var(--accent); }
+        .sidebar-style-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+        .sidebar-style-btn i { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+
+        .font-size-options { display: flex; gap: 6px; }
+        .font-size-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .font-size-btn:hover { border-color: var(--accent); }
+        .font-size-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: var(--bg-sidebar-hover);
+            color: var(--text-sidebar);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .settings-btn:hover { background: var(--bg-sidebar-hover); color: #fff; }
+        .settings-btn i { font-size: 1rem; }
+
+        /* Messages */
+        .messages-container {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            animation: slideDown 0.3s ease;
+        }
+        .alert-success { background: rgba(34,197,94,0.1); color: #16a34a; border-color: rgba(34,197,94,0.2); }
+        .alert-error { background: rgba(239,68,68,0.1); color: #dc2626; border-color: rgba(239,68,68,0.2); }
+        .alert-warning { background: rgba(245,158,11,0.1); color: #d97706; border-color: rgba(245,158,11,0.2); }
+        .alert-info { background: rgba(59,130,246,0.1); color: #2563eb; border-color: rgba(59,130,246,0.2); }
+        [data-theme="dark"] .alert-success { color: #4ade80; }
+        [data-theme="dark"] .alert-error { color: #f87171; }
+        [data-theme="dark"] .alert-warning { color: #fbbf24; }
+        [data-theme="dark"] .alert-info { color: #60a5fa; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Status dots */
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .status-good { background: #22c55e; }
+        .status-warning { background: #f59e0b; }
+        .status-critical { background: #ef4444; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .bg-critical-gradient { background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05)); }
+        .bg-warning-gradient { background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.05)); }
+        .bg-good-gradient { background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05)); }
+
+        /* Card styling */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: background var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        .card-hover:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -280px; top: 0; bottom: 0; z-index: 50; transition: left 0.3s; }
+            .sidebar.open { left: 0; }
+            .mobile-toggle { display: block; }
+            .settings-drawer { width: 100%; }
+            .main-area { padding: 16px; }
+            .topbar { padding: 0 16px; }
+            [data-sidebar-style="floating"] .sidebar { margin: 0; border-radius: 0; height: 100vh; }
+        }
+
+        /* Utility */
+        .transition-theme { transition: background var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed); }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="app-layout">
+        <!-- Settings Overlay -->
+        <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+
+        <!-- Settings Drawer -->
+        <div class="settings-drawer" id="settingsDrawer">
+            <div class="settings-header">
+                <h2><i class="fas fa-cog" style="color:var(--accent)"></i> Personnalisation</h2>
+                <button class="settings-close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="settings-body">
+                <!-- Theme -->
+                <div class="settings-group">
+                    <h3>Thème</h3>
+                    <div class="setting-row">
+                        <label>Mode d'affichage</label>
+                        <div class="theme-btns">
+                            <button class="theme-btn" data-theme-value="light" onclick="setTheme('light')" title="Clair"><i class="fas fa-sun"></i></button>
+                            <button class="theme-btn" data-theme-value="dark" onclick="setTheme('dark')" title="Sombre"><i class="fas fa-moon"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Color -->
+                <div class="settings-group">
+                    <h3>Couleur de la sidebar</h3>
+                    <div class="color-swatches">
+                        <button class="color-swatch" style="background:#3b82f6" data-color="default" onclick="setSidebarColor('default')" title="Bleu"></button>
+                        <button class="color-swatch" style="background:#22c55e" data-color="green" onclick="setSidebarColor('green')" title="Vert"></button>
+                        <button class="color-swatch" style="background:#a855f7" data-color="purple" onclick="setSidebarColor('purple')" title="Violet"></button>
+                        <button class="color-swatch" style="background:#f97316" data-color="orange" onclick="setSidebarColor('orange')" title="Orange"></button>
+                        <button class="color-swatch" style="background:#e11d48" data-color="rose" onclick="setSidebarColor('rose')" title="Rose"></button>
+                        <button class="color-swatch" style="background:#14b8a6" data-color="teal" onclick="setSidebarColor('teal')" title="Teal"></button>
+                        <button class="color-swatch" style="background:#6366f1" data-color="indigo" onclick="setSidebarColor('indigo')" title="Indigo"></button>
+                    </div>
+                </div>
+
+                <!-- Sidebar Style -->
+                <div class="settings-group">
+                    <h3>Style de la sidebar</h3>
+                    <div class="sidebar-style-options">
+                        <button class="sidebar-style-btn" data-style="standard" onclick="setSidebarStyle('standard')">
+                            <i class="fas fa-columns"></i> Standard
+                        </button>
+                        <button class="sidebar-style-btn" data-style="compact" onclick="setSidebarStyle('compact')">
+                            <i class="fas fa-compress-alt"></i> Compact
+                        </button>
+                        <button class="sidebar-style-btn" data-style="icons" onclick="setSidebarStyle('icons')">
+                            <i class="fas fa-icons"></i> Icônes
+                        </button>
+                        <button class="sidebar-style-btn" data-style="floating" onclick="setSidebarStyle('floating')">
+                            <i class="fas fa-border-all"></i> Flottant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Font Size -->
+                <div class="settings-group">
+                    <h3>Taille de police</h3>
+                    <div class="font-size-options">
+                        <button class="font-size-btn" data-size="small" onclick="setFontSize('small')" style="font-size:0.8rem">Petit</button>
+                        <button class="font-size-btn" data-size="medium" onclick="setFontSize('medium')" style="font-size:0.9rem">Moyen</button>
+                        <button class="font-size-btn" data-size="large" onclick="setFontSize('large')" style="font-size:1rem">Grand</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">
+                    <svg viewBox="0 0 64 64"><path d="M12 32c0-2 1-4 2-5l4-6c1-1 2-2 4-2h20c2 0 3 1 4 2l4 6c1 1 2 3 2 5v12c0 1-1 2-2 2h-4c-1 0-2-1-2-2v-2H20v2c0 1-1 2-2 2h-4c-1 0-2-1-2-2V32z" fill="white"/><circle cx="20" cy="36" r="4" fill="#0f172a"/><circle cx="44" cy="36" r="4" fill="#0f172a"/><path d="M18 26h28l-2-3H20l-2 3z" fill="#e2e8f0"/></svg>
+                </div>
+                <span class="sidebar-brand">Véhi<span>Gest</span></span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-title">Navigation</div>
+
+                <a href="{% url 'dashboard:home' %}" class="sidebar-link {% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="link-text">Tableau de bord</span>
+                </a>
+                <a href="{% url 'vehicles:list' %}" class="sidebar-link {% if request.resolver_match.app_name == 'vehicles' %}active{% endif %}">
+                    <i class="fas fa-car"></i>
+                    <span class="link-text">Mes véhicules</span>
+                </a>
+                <a href="{% url 'maintenance:list' %}" class="sidebar-link {% if request.resolver_match.app_name == 'maintenance' %}active{% endif %}">
+                    <i class="fas fa-tools"></i>
+                    <span class="link-text">Entretien</span>
+                </a>
+                <a href="{% url 'documents:list' %}" class="sidebar-link {% if request.resolver_match.app_name == 'documents' %}active{% endif %}">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="link-text">Documents</span>
+                </a>
+                <a href="{% url 'notifications:reminders' %}" class="sidebar-link {% if request.resolver_match.app_name == 'notifications' %}active{% endif %}">
+                    <i class="fas fa-bell"></i>
+                    <span class="link-text">Rappels</span>
+                </a>
+
+                <div class="sidebar-section-title">Compte</div>
+
+                <a href="{% url 'accounts:profile' %}" class="sidebar-link">
+                    <i class="fas fa-user"></i>
+                    <span class="link-text">Mon profil</span>
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="sidebar-link" style="color:rgba(239,68,68,0.8)">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="link-text">Déconnexion</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="settings-btn" onclick="openSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Personnaliser</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="app-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span style="font-weight:600;font-size:0.9rem;color:var(--text-secondary);display:none" id="currentPageTitle">{% block page_title %}{% endblock %}</span>
+                </div>
+                <div class="topbar-right">
+                    <button onclick="openSettings()" class="theme-btn" title="Personnaliser" style="width:34px;height:34px;border-color:var(--border-color)">
+                        <i class="fas fa-palette"></i>
+                    </button>
+                    <div style="display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:50px;background:var(--accent-light);border:1px solid var(--border-color)">
+                        <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem;font-weight:700">
+                            {{ user.username|first|upper }}
+                        </div>
+                        <span style="font-size:0.8rem;font-weight:600;color:var(--text-primary)">{{ user.username }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Area -->
+            <main class="main-area">
+                {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile sidebar overlay -->
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:45;display:none" id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+
+    <script>
+        // ===== SETTINGS MANAGEMENT =====
+        function getSettings() {
+            try { return JSON.parse(localStorage.getItem('vehigest_settings')) || {}; } catch { return {}; }
+        }
+        function saveSettings(settings) {
+            localStorage.setItem('vehigest_settings', JSON.stringify(settings));
+        }
+
+        function applySettings(settings) {
+            const html = document.documentElement;
+            if (settings.theme) html.setAttribute('data-theme', settings.theme);
+            if (settings.sidebarColor) html.setAttribute('data-sidebar-color', settings.sidebarColor);
+            if (settings.sidebarStyle) html.setAttribute('data-sidebar-style', settings.sidebarStyle);
+            if (settings.fontSize) html.setAttribute('data-font-size', settings.fontSize);
+            updateActiveUI(settings);
+        }
+
+        function updateActiveUI(settings) {
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.themeValue === settings.theme));
+            document.querySelectorAll('.color-swatch').forEach(b => b.classList.toggle('active', b.dataset.color === settings.sidebarColor));
+            document.querySelectorAll('.sidebar-style-btn').forEach(b => b.classList.toggle('active', b.dataset.style === settings.sidebarStyle));
+            document.querySelectorAll('.font-size-btn').forEach(b => b.classList.toggle('active', b.dataset.size === settings.fontSize));
+        }
+
+        function setTheme(v) { const s = getSettings(); s.theme = v; saveSettings(s); applySettings(s); }
+        function setSidebarColor(v) { const s = getSettings(); s.sidebarColor = v; saveSettings(s); applySettings(s); }
+        function setSidebarStyle(v) { const s = getSettings(); s.sidebarStyle = v; saveSettings(s); applySettings(s); }
+        function setFontSize(v) { const s = getSettings(); s.fontSize = v; saveSettings(s); applySettings(s); }
+
+        function openSettings() {
+            document.getElementById('settingsDrawer').classList.add('open');
+            document.getElementById('settingsOverlay').classList.add('open');
+        }
+        function closeSettings() {
+            document.getElementById('settingsDrawer').classList.remove('open');
+            document.getElementById('settingsOverlay').classList.remove('open');
+        }
+
+        // ===== SIDEBAR MOBILE =====
+        function toggleMobileSidebar() {
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('mobileOverlay');
+            const isOpen = sb.classList.contains('open');
+            sb.classList.toggle('open');
+            ov.style.display = isOpen ? 'none' : 'block';
+        }
+        function closeMobileSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('mobileOverlay').style.display = 'none';
+        }
+
+        // ===== INIT =====
+        (function() {
+            const settings = getSettings();
+            if (!settings.theme) settings.theme = 'light';
+            if (!settings.sidebarColor) settings.sidebarColor = 'default';
+            if (!settings.sidebarStyle) settings.sidebarStyle = 'standard';
+            if (!settings.fontSize) settings.fontSize = 'medium';
+            saveSettings(settings);
+            applySettings(settings);
+
+            // Close settings on Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeSettings();
+            });
+        })();
+    </script>
+    {% else %}
+    <main class="min-h-screen" style="background:var(--bg-body)">
+        {% block auth_content %}{% endblock %}
+    </main>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

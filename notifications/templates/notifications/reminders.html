@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Rappels{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold text-gray-800 mb-6"><i class="fas fa-bell text-blue-600 mr-2"></i>Rappels</h1>
+
+{% if reminders %}
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Type</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Véhicule</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Message</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Échéance</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Statut</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for r in reminders %}
+                <tr>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full
+                            {% if r.reminder_type == 'oil_change' %}bg-yellow-100 text-yellow-800
+                            {% elif r.reminder_type == 'inspection' %}bg-blue-100 text-blue-800
+                            {% elif r.reminder_type == 'insurance' %}bg-green-100 text-green-800
+                            {% else %}bg-purple-100 text-purple-800{% endif %}">
+                            {{ r.get_reminder_type_display }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">{{ r.vehicle.name }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">{{ r.message }}</td>
+                    <td class="px-4 py-3">{{ r.due_date }}</td>
+                    <td class="px-4 py-3">
+                        {% if r.is_sent %}
+                        <span class="text-green-600 text-sm"><i class="fas fa-check-circle mr-1"></i>Envoyé</span>
+                        {% else %}
+                        <span class="text-gray-400 text-sm"><i class="fas fa-clock mr-1"></i>En attente</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-16 bg-white rounded-xl shadow-sm">
+    <i class="fas fa-bell-slash text-6xl text-gray-300 mb-4"></i>
+    <h3 class="text-xl font-semibold text-gray-600">Aucun rappel</h3>
+    <p class="text-gray-500">Les rappels seront créés automatiquement</p>
+</div>
+{% endif %}
+{% endblock %}

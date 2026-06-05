@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-800">
+            <i class="fas fa-tachometer-alt text-blue-600 mr-2"></i>Tableau de bord
+        </h1>
+        <p class="text-gray-500 text-sm">{{ user.username }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">Véhicules</p>
+                    <p class="text-3xl font-bold text-gray-800">{{ total_vehicles }}</p>
+                </div>
+                <i class="fas fa-car text-4xl text-blue-400"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">Entretiens</p>
+                    <p class="text-3xl font-bold text-gray-800">{{ total_maintenance }}</p>
+                </div>
+                <i class="fas fa-tools text-4xl text-green-400"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">En alerte</p>
+                    <p class="text-3xl font-bold text-yellow-600">{{ warning_count }}</p>
+                </div>
+                <i class="fas fa-exclamation-triangle text-4xl text-yellow-400"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-sm">État critique</p>
+                    <p class="text-3xl font-bold text-red-600">{{ critical_count }}</p>
+                </div>
+                <i class="fas fa-exclamation-circle text-4xl text-red-400"></i>
+            </div>
+        </div>
+    </div>
+
+    {% if vehicle_statuses %}
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-car mr-2 text-blue-600"></i>Aperçu des véhicules</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for item in vehicle_statuses %}
+            <a href="{% url 'vehicles:detail' item.vehicle.pk %}" class="block p-4 rounded-lg border hover:shadow-md transition
+                {% if item.health.is_critical %}bg-red-50 border-red-200
+                {% elif item.health.overall_status == 'warning' %}bg-yellow-50 border-yellow-200
+                {% else %}bg-green-50 border-green-200{% endif %}">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-semibold text-gray-800">{{ item.vehicle.name }}</h3>
+                    <span class="status-dot 
+                        {% if item.health.is_critical %}status-critical
+                        {% elif item.health.overall_status == 'warning' %}status-warning
+                        {% else %}status-good{% endif %}"></span>
+                </div>
+                <p class="text-sm text-gray-600">{{ item.vehicle.brand }} {{ item.vehicle.model }}</p>
+                <p class="text-sm text-gray-500">{{ item.vehicle.mileage }} km</p>
+                {% if item.health.is_critical %}
+                <p class="text-xs text-red-600 font-medium mt-2"><i class="fas fa-exclamation-circle mr-1"></i>Action requise</p>
+                {% elif item.health.overall_status == 'warning' %}
+                <p class="text-xs text-yellow-600 font-medium mt-2"><i class="fas fa-clock mr-1"></i>Attention nécessaire</p>
+                {% endif %}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {% if upcoming_reminders %}
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-bell mr-2 text-yellow-500"></i>Rappels à venir</h2>
+            <div class="space-y-3">
+                {% for reminder in upcoming_reminders|slice:":5" %}
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium">{{ reminder.vehicle.name }}</p>
+                        <p class="text-sm text-gray-500">
+                            <span class="px-2 py-0.5 text-xs font-medium rounded-full
+                                {% if reminder.type == 'Vidange' %}bg-yellow-100 text-yellow-800
+                                {% elif reminder.type == 'Contrôle technique' %}bg-blue-100 text-blue-800
+                                {% else %}bg-green-100 text-green-800{% endif %}">
+                                {{ reminder.type }}
+                            </span>
+                            - {{ reminder.due_date }}
+                        </p>
+                    </div>
+                    <span class="font-semibold {% if reminder.days_left <= 7 %}text-red-600{% else %}text-yellow-600{% endif %}">
+                        J-{{ reminder.days_left }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if recent_maintenance %}
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-history mr-2 text-blue-500"></i>Derniers entretiens</h2>
+            <div class="space-y-3">
+                {% for m in recent_maintenance %}
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="font-medium">{{ m.vehicle.name }}</p>
+                        <p class="text-sm text-gray-500">
+                            <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                                {{ m.get_maintenance_type_display }}
+                            </span>
+                            - {{ m.date }} - {{ m.mileage_at_service }} km
+                        </p>
+                    </div>
+                    {% if m.cost %}<span class="font-semibold text-gray-700">{{ m.cost }} €</span>{% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if not vehicle_statuses %}
+    <div class="bg-white rounded-xl shadow-sm p-12 text-center">
+        <i class="fas fa-car-side text-6xl text-gray-300 mb-4"></i>
+        <h2 class="text-2xl font-semibold text-gray-600 mb-2">Bienvenue sur VéhiGest</h2>
+        <p class="text-gray-500 mb-6">Gérez l'entretien, les assurances, et le diagnostic de tous vos véhicules en un seul endroit.</p>
+        <a href="{% url 'vehicles:create' %}" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block shadow-lg">
+            <i class="fas fa-plus mr-2"></i>Ajouter mon premier véhicule
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

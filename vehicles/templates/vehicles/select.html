@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Ajouter un véhicule{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <a href="{% url 'vehicles:list' %}" class="text-blue-600 hover:underline text-sm mb-4 inline-block">
+        <i class="fas fa-arrow-left mr-1"></i>Retour
+    </a>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+            <i class="fas fa-search text-blue-600 mr-2"></i>Sélectionner un véhicule existant
+        </h1>
+        <p class="text-gray-500 mb-4">
+            Tapez une marque, un modèle ou un nom pour retrouver un véhicule déjà enregistré.
+            S'il n'existe pas, créez-en un nouveau.
+        </p>
+
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <input type="text" id="vehicle-search"
+                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                placeholder="Rechercher par marque, modèle ou nom... (ex: Renault Clio)"
+                autofocus>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <i class="fas fa-spinner fa-pulse text-gray-400 hidden" id="search-spinner"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="results-container">
+        <div class="text-center py-12 text-gray-500">
+            <i class="fas fa-car text-5xl text-gray-300 mb-4"></i>
+            <p class="text-lg">Commencez à taper pour rechercher un véhicule</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-6">
+        <a href="{% url 'vehicles:create' %}"
+           class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition inline-flex items-center gap-2" id="create-new-btn">
+            <i class="fas fa-plus"></i>
+            Créer un nouveau véhicule
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let searchTimeout;
+const searchInput = document.getElementById('vehicle-search');
+const resultsContainer = document.getElementById('results-container');
+const spinner = document.getElementById('search-spinner');
+
+searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    const q = this.value.trim();
+    if (q.length < 1) {
+        resultsContainer.innerHTML = `
+            <div class="text-center py-12 text-gray-500">
+                <i class="fas fa-car text-5xl text-gray-300 mb-4"></i>
+                <p class="text-lg">Commencez à taper pour rechercher un véhicule</p>
+            </div>
+        `;
+        return;
+    }
+    spinner.classList.remove('hidden');
+    searchTimeout = setTimeout(() => {
+        fetch('/api/vehicules/?q=' + encodeURIComponent(q))
+            .then(r => r.json())
+            .then(data => {
+                spinner.classList.add('hidden');
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = `
+                        <div class="text-center py-12 bg-white rounded-xl shadow-sm">
+                            <i class="fas fa-search text-5xl text-gray-300 mb-4"></i>
+                            <p class="text-lg text-gray-600 mb-2">Aucun véhicule trouvé pour "<strong>${escapeHtml(q)}</strong>"</p>
+                            <p class="text-gray-500">Cliquez sur "Créer un nouveau véhicule" ci-dessous</p>
+                        </div>
+                    `;
+                } else {
+                    let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+                    data.forEach(v => {
+                        const label = v.registration_number ? v.registration_number : 'Sans plaque';
+                        html += `
+                            <a href="/vehicules/${v.id}/"
+                               class="block bg-white rounded-xl shadow-sm hover:shadow-md transition p-4 border border-gray-100 hover:border-blue-300">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-car text-blue-600"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-gray-800 truncate">${escapeHtml(v.brand)} ${escapeHtml(v.model)}</h3>
+                                        <p class="text-sm text-gray-500">
+                                            ${escapeHtml(v.name)} · ${v.year} · ${v.mileage} km
+                                        </p>
+                                        <p class="text-xs text-gray-400">${escapeHtml(label)}</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-300"></i>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    html += '</div>';
+                    resultsContainer.innerHTML = html;
+                }
+            })
+            .catch(() => {
+                spinner.classList.add('hidden');
+                resultsContainer.innerHTML = '<div class="text-center py-12 text-red-500">Erreur lors de la recherche</div>';
+            });
+    }, 300);
+});
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
+{% endblock %}

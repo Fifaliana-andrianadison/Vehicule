@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Documents{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-file-alt text-blue-600 mr-2"></i>Documents</h1>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold"><i class="fas fa-shield-alt text-blue-600 mr-2"></i>Assurances</h2>
+            <a href="{% url 'documents:insurance_create' %}" class="text-blue-600 hover:text-blue-800"><i class="fas fa-plus"></i></a>
+        </div>
+        {% if insurances %}
+        <div class="space-y-3">
+            {% for ins in insurances %}
+            <div class="p-3 bg-gray-50 rounded-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">{{ ins.company_name }}</p>
+                        <p class="text-sm text-gray-500">{{ ins.vehicle.name }}</p>
+                        <p class="text-xs text-gray-400">Expire le {{ ins.end_date }}</p>
+                    </div>
+                    <div class="flex gap-1">
+                        <a href="{% url 'documents:insurance_update' ins.pk %}" class="text-blue-600 text-sm"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'documents:insurance_delete' ins.pk %}" class="text-red-600 text-sm" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-sm text-center py-4">Aucune assurance</p>
+        {% endif %}
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold"><i class="fas fa-id-card text-blue-600 mr-2"></i>Cartes Grises</h2>
+            <a href="{% url 'documents:carte_grise_create' %}" class="text-blue-600 hover:text-blue-800"><i class="fas fa-plus"></i></a>
+        </div>
+        {% if cartes_grise %}
+        <div class="space-y-3">
+            {% for cg in cartes_grise %}
+            <div class="p-3 bg-gray-50 rounded-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">{{ cg.registration_number }}</p>
+                        <p class="text-sm text-gray-500">{{ cg.vehicle.name }}</p>
+                        {% if cg.expiry_date %}<p class="text-xs text-gray-400">Expire le {{ cg.expiry_date }}</p>{% endif %}
+                    </div>
+                    <div class="flex gap-1">
+                        <a href="{% url 'documents:carte_grise_update' cg.pk %}" class="text-blue-600 text-sm"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'documents:carte_grise_delete' cg.pk %}" class="text-red-600 text-sm" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-sm text-center py-4">Aucune carte grise</p>
+        {% endif %}
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold"><i class="fas fa-clipboard-check text-blue-600 mr-2"></i>Contrôles Techniques</h2>
+            <a href="{% url 'documents:inspection_create' %}" class="text-blue-600 hover:text-blue-800"><i class="fas fa-plus"></i></a>
+        </div>
+        {% if inspections %}
+        <div class="space-y-3">
+            {% for insp in inspections %}
+            <div class="p-3 bg-gray-50 rounded-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-medium">{{ insp.vehicle.name }}</p>
+                        <p class="text-sm text-gray-500">{{ insp.inspection_date }} - {{ insp.get_result_display }}</p>
+                        <p class="text-xs {% if insp.expiry_date < today %}text-red-500{% else %}text-gray-400{% endif %}">
+                            Expire le {{ insp.expiry_date }}
+                        </p>
+                    </div>
+                    <div class="flex gap-1">
+                        <a href="{% url 'documents:inspection_update' insp.pk %}" class="text-blue-600 text-sm"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'documents:inspection_delete' insp.pk %}" class="text-red-600 text-sm" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-sm text-center py-4">Aucun contrôle technique</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

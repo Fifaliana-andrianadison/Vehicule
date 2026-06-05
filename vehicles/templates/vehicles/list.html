@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Mes véhicules{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-car text-blue-600 mr-2"></i>Mes véhicules</h1>
+    <a href="{% url 'vehicles:select' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+        <i class="fas fa-plus mr-2"></i>Ajouter
+    </a>
+</div>
+
+{% if vehicles %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for vehicle in vehicles %}
+    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden">
+        {% if vehicle.photo %}
+        <img src="{{ vehicle.photo.url }}" class="w-full h-48 object-cover" alt="{{ vehicle.name }}">
+        {% else %}
+        <div class="w-full h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+            <i class="fas fa-car text-6xl text-blue-400"></i>
+        </div>
+        {% endif %}
+        <div class="p-4">
+            <div class="flex justify-between items-start mb-2">
+                <h3 class="text-lg font-semibold text-gray-800">{{ vehicle.name }}</h3>
+                {% with health=vehicle.get_health_status %}
+                <span class="status-dot {% if health.is_critical %}status-critical{% elif health.overall_status == 'warning' %}status-warning{% else %}status-good{% endif %}"></span>
+                {% endwith %}
+            </div>
+            <p class="text-gray-600 text-sm">{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }})</p>
+            <p class="text-gray-500 text-sm"><i class="fas fa-tachometer-alt mr-1"></i>{{ vehicle.mileage }} km</p>
+            {% if vehicle.registration_number %}
+            <p class="text-gray-500 text-sm"><i class="fas fa-id-card mr-1"></i>{{ vehicle.registration_number }}</p>
+            {% endif %}
+            <div class="mt-3 flex gap-2">
+                <a href="{% url 'vehicles:detail' vehicle.pk %}" class="flex-1 text-center bg-blue-50 text-blue-700 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition">
+                    <i class="fas fa-eye mr-1"></i>Détails
+                </a>
+                <a href="{% url 'diagnostics:report' vehicle.pk %}" class="flex-1 text-center {% if vehicle.get_health_status.is_critical %}bg-red-50 text-red-700 hover:bg-red-100{% else %}bg-green-50 text-green-700 hover:bg-green-100{% endif %} py-2 rounded-lg text-sm font-medium transition">
+                    <i class="fas fa-stethoscope mr-1"></i>Diagnostic
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-16 bg-white rounded-xl shadow-sm">
+    <i class="fas fa-car text-6xl text-gray-300 mb-4"></i>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">Aucun véhicule</h3>
+    <p class="text-gray-500 mb-6">Ajoutez votre premier véhicule pour commencer</p>
+    <a href="{% url 'vehicles:select' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block">
+        <i class="fas fa-plus mr-2"></i>Ajouter un véhicule
+    </a>
+</div>
+{% endif %}
+{% endblock %}

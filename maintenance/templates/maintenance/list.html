@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Entretiens{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-tools text-blue-600 mr-2"></i>Entretiens</h1>
+    <a href="{% url 'maintenance:create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+        <i class="fas fa-plus mr-2"></i>Nouvel entretien
+    </a>
+</div>
+
+{% if records %}
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Véhicule</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Type</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Kilométrage</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Coût</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Prochaine échéance</th>
+                    <th class="px-4 py-3 text-right text-sm font-semibold text-gray-600">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for r in records %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3">
+                        <a href="{% url 'vehicles:detail' r.vehicle.pk %}" class="text-blue-600 hover:underline font-medium">{{ r.vehicle.name }}</a>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full 
+                            {% if r.maintenance_type == 'oil_change' %}bg-yellow-100 text-yellow-800
+                            {% elif r.maintenance_type == 'brake' %}bg-red-100 text-red-800
+                            {% elif r.maintenance_type == 'tire' %}bg-gray-100 text-gray-800
+                            {% else %}bg-blue-100 text-blue-800{% endif %}">
+                            {{ r.get_maintenance_type_display }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-gray-700">{{ r.date }}</td>
+                    <td class="px-4 py-3 text-gray-700">{{ r.mileage_at_service }} km</td>
+                    <td class="px-4 py-3 font-medium">{% if r.cost %}{{ r.cost }} €{% else %}-{% endif %}</td>
+                    <td class="px-4 py-3">
+                        {% if r.next_due_date and r.next_due_date <= today %}
+                            <span class="text-red-600 font-medium">{{ r.next_due_date }} (en retard)</span>
+                        {% elif r.next_due_date %}
+                            {{ r.next_due_date }}
+                        {% else %}-{% endif %}
+                    </td>
+                    <td class="px-4 py-3 text-right">
+                        <a href="{% url 'maintenance:update' r.pk %}" class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'maintenance:delete' r.pk %}" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-16 bg-white rounded-xl shadow-sm">
+    <i class="fas fa-tools text-6xl text-gray-300 mb-4"></i>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">Aucun entretien</h3>
+    <p class="text-gray-500 mb-6">Enregistrez votre premier entretien</p>
+    <a href="{% url 'maintenance:create' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block">
+        <i class="fas fa-plus mr-2"></i>Nouvel entretien
+    </a>
+</div>
+{% endif %}
+{% endblock %}

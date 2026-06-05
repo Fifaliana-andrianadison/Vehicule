@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Diagnostic - {{ vehicle.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <a href="{% url 'vehicles:detail' vehicle.pk %}" class="text-blue-600 hover:underline text-sm mb-4 inline-block"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
+    
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-stethoscope text-blue-600 mr-2"></i>Diagnostic - {{ vehicle.name }}</h1>
+        <a href="{% url 'diagnostics:history' vehicle.pk %}" class="text-blue-600 hover:underline text-sm">Historique</a>
+    </div>
+
+    {% if health.is_critical %}
+    <div class="bg-critical-gradient border border-red-300 rounded-xl p-6 mb-6">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle text-3xl text-red-600 mr-4"></i>
+            <div>
+                <h2 class="text-xl font-bold text-red-800">⚠ État critique</h2>
+                <p class="text-red-700">Ce véhicule nécessite une attention immédiate !</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-oil-can text-yellow-600 mr-2"></i>Vidange</h3>
+            <p class="{% if 'retard' in health.oil_change_status %}text-red-600{% elif 'Prévue' in health.oil_change_status %}text-yellow-600{% else %}text-green-600{% endif %}">
+                {{ health.oil_change_status }}
+            </p>
+            {% if health.km_until_next_oil_change is not None %}
+            <p class="text-sm text-gray-500 mt-1">{{ health.km_until_next_oil_change }} km restants</p>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-clipboard-check text-blue-600 mr-2"></i>Contrôle technique</h3>
+            <p class="{% if 'Expiré' in health.inspection_status %}text-red-600{% elif 'Expire' in health.inspection_status %}text-yellow-600{% else %}text-green-600{% endif %}">
+                {{ health.inspection_status }}
+            </p>
+            {% if health.days_until_inspection is not None %}
+            <p class="text-sm text-gray-500 mt-1">{{ health.days_until_inspection }} jours restants</p>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-shield-alt text-green-600 mr-2"></i>Assurance</h3>
+            <p class="{% if 'Expirée' in health.insurance_status %}text-red-600{% elif 'Expire' in health.insurance_status %}text-yellow-600{% else %}text-green-600{% endif %}">
+                {{ health.insurance_status }}
+            </p>
+            {% if health.days_until_insurance_expiry is not None %}
+            <p class="text-sm text-gray-500 mt-1">{{ health.days_until_insurance_expiry }} jours restants</p>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-id-card text-purple-600 mr-2"></i>Carte grise</h3>
+            <p class="{% if 'Expirée' in health.registration_status %}text-red-600{% elif 'Expire' in health.registration_status %}text-yellow-600{% else %}text-green-600{% endif %}">
+                {{ health.registration_status }}
+            </p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-list-check text-blue-600 mr-2"></i>Recommandations</h3>
+        <pre class="text-gray-700 whitespace-pre-wrap font-sans">{{ health.recommendations }}</pre>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-gray-800 mb-4"><i class="fas fa-chart-pie text-blue-600 mr-2"></i>Synthèse du diagnostic</h3>
+        <div class="flex items-center gap-4">
+            <div class="text-center">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-bold
+                    {% if health.is_critical %}bg-red-500{% elif health.overall_status == 'warning' %}bg-yellow-500{% else %}bg-green-500{% endif %}">
+                    <i class="fas {% if health.is_critical %}fa-exclamation{% elif health.overall_status == 'warning' %}fa-exclamation{% else %}fa-check{% endif %}"></i>
+                </div>
+                <p class="mt-2 font-semibold">
+                    {% if health.is_critical %}Critique
+                    {% elif health.overall_status == 'warning' %}Attention
+                    {% else %}Bon état{% endif %}
+                </p>
+            </div>
+            <div class="flex-1">
+                <p class="text-gray-700"><strong>Kilométrage actuel :</strong> {{ health.mileage }} km</p>
+                <p class="text-gray-700 mt-1"><strong>Statut vidange :</strong> {{ health.oil_change_status }}</p>
+                <p class="text-gray-700 mt-1"><strong>Prochain CT :</strong> {{ health.inspection_status }}</p>
+                <p class="text-gray-700 mt-1"><strong>Statut assurance :</strong> {{ health.insurance_status }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

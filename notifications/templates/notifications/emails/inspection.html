@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4;">
+    <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; overflow: hidden;">
+        <div style="background: #2563eb; color: white; padding: 20px; text-align: center;">
+            <h2>Rappel Contrôle Technique</h2>
+        </div>
+        <div style="padding: 20px;">
+            <p>Bonjour {{ user.username }},</p>
+            <p>Le contrôle technique de votre véhicule <strong>{{ vehicle.name }}</strong> arrive à expiration.</p>
+            {% if days_left > 0 %}
+            <p>Il expire dans <strong>{{ days_left }} jours</strong>, le {{ expiry_date }}.</p>
+            {% else %}
+            <p>Il a expiré le <strong>{{ expiry_date }}</strong> (en retard de {{ days_left|stringformat:"+d" }} jours).</p>
+            {% endif %}
+            <p style="text-align: center; margin: 30px 0;">
+                <a href="{{ site_url }}{% url 'vehicles:detail' vehicle.pk %}" style="background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px;">Voir le véhicule</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

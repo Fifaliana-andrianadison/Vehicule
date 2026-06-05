@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4;">
+    <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; overflow: hidden;">
+        <div style="background: #2563eb; color: white; padding: 20px; text-align: center;">
+            <h2>Rappel Assurance</h2>
+        </div>
+        <div style="padding: 20px;">
+            <p>Bonjour {{ user.username }},</p>
+            <p>L'assurance <strong>{{ company }}</strong> de votre véhicule <strong>{{ vehicle.name }}</strong> arrive à expiration.</p>
+            {% if days_left > 0 %}
+            <p>Elle expire dans <strong>{{ days_left }} jours</strong>, le {{ end_date }}.</p>
+            {% else %}
+            <p>Elle a expiré le <strong>{{ end_date }}</strong>.</p>
+            {% endif %}
+            <p style="text-align: center; margin: 30px 0;">
+                <a href="{{ site_url }}{% url 'documents:list' %}" style="background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px;">Voir les documents</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
