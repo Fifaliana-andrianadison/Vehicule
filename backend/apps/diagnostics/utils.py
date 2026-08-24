@@ -1,10 +1,10 @@
 from datetime import date, timedelta
-from vehicles.models import Vehicle
+from apps.vehicles.models import Vehicle
 
 
 def get_vehicle_health(vehicle):
-    from maintenance.models import MaintenanceRecord
-    from documents.models import TechnicalInspection, Insurance, CarteGrise
+    from apps.maintenance.models import MaintenanceRecord
+    from apps.documents.models import TechnicalInspection, Insurance, CarteGrise
 
     today = date.today()
     issues = []

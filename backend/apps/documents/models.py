@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from vehicles.models import Vehicle
+from apps.vehicles.models import Vehicle
 
 
 class Insurance(models.Model):

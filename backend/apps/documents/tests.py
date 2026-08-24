@@ -3,8 +3,8 @@ from decimal import Decimal
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from vehicles.models import Vehicle
-from documents.models import Insurance, CarteGrise, TechnicalInspection
+from apps.vehicles.models import Vehicle
+from apps.documents.models import Insurance, CarteGrise, TechnicalInspection
 
 
 class InsuranceModelTest(TestCase):

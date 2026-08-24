@@ -1,5 +1,5 @@
 from django.db import models
-from vehicles.models import Vehicle
+from apps.vehicles.models import Vehicle
 
 
 class Reminder(models.Model):

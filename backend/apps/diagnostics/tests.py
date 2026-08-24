@@ -2,11 +2,11 @@ from datetime import date, timedelta
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from vehicles.models import Vehicle
-from maintenance.models import MaintenanceRecord
-from documents.models import Insurance, TechnicalInspection, CarteGrise
-from diagnostics.models import DiagnosticReport
-from diagnostics.utils import get_vehicle_health
+from apps.vehicles.models import Vehicle
+from apps.maintenance.models import MaintenanceRecord
+from apps.documents.models import Insurance, TechnicalInspection, CarteGrise
+from apps.diagnostics.models import DiagnosticReport
+from apps.diagnostics.utils import get_vehicle_health
 
 
 class GetVehicleHealthTest(TestCase):

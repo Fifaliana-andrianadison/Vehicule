@@ -1,0 +1,635 @@
+[
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 1,
+  "fields": {
+    "vehicle": 1,
+    "maintenance_type": "oil_change",
+    "description": "oil_change - Clio",
+    "date": "2025-05-02",
+    "mileage_at_service": 31290,
+    "cost": "269.00",
+    "garage_name": "Norauto",
+    "next_due_mileage": 41290,
+    "next_due_date": "2026-07-25",
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.248Z",
+    "updated_at": "2026-06-05T12:29:40.249Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 2,
+  "fields": {
+    "vehicle": 1,
+    "maintenance_type": "brake",
+    "description": "brake - Clio",
+    "date": "2025-08-13",
+    "mileage_at_service": 43373,
+    "cost": "274.00",
+    "garage_name": "Speedy",
+    "next_due_mileage": 73373,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.255Z",
+    "updated_at": "2026-06-05T12:29:40.255Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 3,
+  "fields": {
+    "vehicle": 1,
+    "maintenance_type": "tire",
+    "description": "tire - Clio",
+    "date": "2025-05-01",
+    "mileage_at_service": 52244,
+    "cost": "77.00",
+    "garage_name": "Norauto",
+    "next_due_mileage": 92244,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.261Z",
+    "updated_at": "2026-06-05T12:29:40.261Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 4,
+  "fields": {
+    "vehicle": 1,
+    "maintenance_type": "filter",
+    "description": "filter - Clio",
+    "date": "2026-04-25",
+    "mileage_at_service": 59953,
+    "cost": "499.00",
+    "garage_name": "Feu Vert",
+    "next_due_mileage": 79953,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.266Z",
+    "updated_at": "2026-06-05T12:29:40.266Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 5,
+  "fields": {
+    "vehicle": 1,
+    "maintenance_type": "battery",
+    "description": "battery - Clio",
+    "date": "2025-12-03",
+    "mileage_at_service": 70330,
+    "cost": "65.00",
+    "garage_name": "Midas",
+    "next_due_mileage": null,
+    "next_due_date": "2027-12-03",
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.270Z",
+    "updated_at": "2026-06-05T12:29:40.270Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 6,
+  "fields": {
+    "vehicle": 2,
+    "maintenance_type": "oil_change",
+    "description": "oil_change - 308",
+    "date": "2026-02-24",
+    "mileage_at_service": 50082,
+    "cost": "212.00",
+    "garage_name": "Garage du Centre",
+    "next_due_mileage": 60082,
+    "next_due_date": "2027-02-24",
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.275Z",
+    "updated_at": "2026-06-05T12:29:40.275Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 7,
+  "fields": {
+    "vehicle": 2,
+    "maintenance_type": "brake",
+    "description": "brake - 308",
+    "date": "2025-06-15",
+    "mileage_at_service": 58843,
+    "cost": "202.00",
+    "garage_name": "Midas",
+    "next_due_mileage": 88843,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.280Z",
+    "updated_at": "2026-06-05T12:29:40.280Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 8,
+  "fields": {
+    "vehicle": 2,
+    "maintenance_type": "tire",
+    "description": "tire - 308",
+    "date": "2025-07-03",
+    "mileage_at_service": 70531,
+    "cost": "57.00",
+    "garage_name": "Garage du Centre",
+    "next_due_mileage": 110531,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.284Z",
+    "updated_at": "2026-06-05T12:29:40.284Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 9,
+  "fields": {
+    "vehicle": 2,
+    "maintenance_type": "filter",
+    "description": "filter - 308",
+    "date": "2026-03-24",
+    "mileage_at_service": 79348,
+    "cost": "295.00",
+    "garage_name": "Garage du Centre",
+    "next_due_mileage": 99348,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.289Z",
+    "updated_at": "2026-06-05T12:29:40.289Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 10,
+  "fields": {
+    "vehicle": 2,
+    "maintenance_type": "battery",
+    "description": "battery - 308",
+    "date": "2025-12-06",
+    "mileage_at_service": 84169,
+    "cost": "204.00",
+    "garage_name": "Garage du Centre",
+    "next_due_mileage": null,
+    "next_due_date": "2027-12-06",
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.294Z",
+    "updated_at": "2026-06-05T12:29:40.294Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 11,
+  "fields": {
+    "vehicle": 3,
+    "maintenance_type": "oil_change",
+    "description": "oil_change - Golf",
+    "date": "2025-05-06",
+    "mileage_at_service": 20751,
+    "cost": "225.00",
+    "garage_name": "Norauto",
+    "next_due_mileage": 30751,
+    "next_due_date": "2026-07-27",
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.299Z",
+    "updated_at": "2026-06-05T12:29:40.299Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 12,
+  "fields": {
+    "vehicle": 3,
+    "maintenance_type": "brake",
+    "description": "brake - Golf",
+    "date": "2025-12-31",
+    "mileage_at_service": 28437,
+    "cost": "185.00",
+    "garage_name": "Midas",
+    "next_due_mileage": 58437,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.303Z",
+    "updated_at": "2026-06-05T12:29:40.303Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 13,
+  "fields": {
+    "vehicle": 3,
+    "maintenance_type": "tire",
+    "description": "tire - Golf",
+    "date": "2025-06-18",
+    "mileage_at_service": 36137,
+    "cost": "475.00",
+    "garage_name": "Speedy",
+    "next_due_mileage": 76137,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.307Z",
+    "updated_at": "2026-06-05T12:29:40.307Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 14,
+  "fields": {
+    "vehicle": 3,
+    "maintenance_type": "filter",
+    "description": "filter - Golf",
+    "date": "2026-02-08",
+    "mileage_at_service": 45066,
+    "cost": "87.00",
+    "garage_name": "Midas",
+    "next_due_mileage": 65066,
+    "next_due_date": null,
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.312Z",
+    "updated_at": "2026-06-05T12:29:40.312Z"
+  }
+},
+{
+  "model": "maintenance.maintenancerecord",
+  "pk": 15,
+  "fields": {
+    "vehicle": 3,
+    "maintenance_type": "battery",
+    "description": "battery - Golf",
+    "date": "2025-07-07",
+    "mileage_at_service": 50990,
+    "cost": "84.00",
+    "garage_name": "Feu Vert",
+    "next_due_mileage": null,
+    "next_due_date": "2027-07-07",
+    "notes": "Entretien régulier effectué",
+    "created_at": "2026-06-05T12:29:40.316Z",
+    "updated_at": "2026-06-05T12:29:40.317Z"
+  }
+},
+{
+  "model": "documents.insurance",
+  "pk": 1,
+  "fields": {
+    "vehicle": 1,
+    "company_name": "MAIF",
+    "policy_number": "POL-2021-001",
+    "start_date": "2024-01-01",
+    "end_date": "2026-08-02",
+    "premium_amount": "460.00",
+    "is_active": true,
+    "document": "",
+    "notes": "",
+    "created_at": "2026-06-05T12:29:40.321Z",
+    "updated_at": "2026-06-05T12:29:40.321Z"
+  }
+},
+{
+  "model": "documents.insurance",
+  "pk": 2,
+  "fields": {
+    "vehicle": 2,
+    "company_name": "AXA",
+    "policy_number": "POL-2022-002",
+    "start_date": "2024-06-01",
+    "end_date": "2026-06-12",
+    "premium_amount": "632.00",
+    "is_active": true,
+    "document": "",
+    "notes": "",
+    "created_at": "2026-06-05T12:29:40.326Z",
+    "updated_at": "2026-06-05T12:29:40.326Z"
+  }
+},
+{
+  "model": "documents.insurance",
+  "pk": 3,
+  "fields": {
+    "vehicle": 3,
+    "company_name": "Groupama",
+    "policy_number": "POL-2023-003",
+    "start_date": "2023-03-01",
+    "end_date": "2026-05-06",
+    "premium_amount": "579.00",
+    "is_active": false,
+    "document": "",
+    "notes": "",
+    "created_at": "2026-06-05T12:29:40.330Z",
+    "updated_at": "2026-06-05T12:29:40.330Z"
+  }
+},
+{
+  "model": "documents.cartegrise",
+  "pk": 1,
+  "fields": {
+    "vehicle": 1,
+    "registration_number": "AB-123-CD",
+    "issue_date": "2021-03-15",
+    "expiry_date": "2027-02-01",
+    "document": "",
+    "created_at": "2026-06-05T12:29:40.349Z",
+    "updated_at": "2026-06-05T12:29:40.349Z"
+  }
+},
+{
+  "model": "documents.cartegrise",
+  "pk": 2,
+  "fields": {
+    "vehicle": 2,
+    "registration_number": "EF-456-GH",
+    "issue_date": "2020-07-10",
+    "expiry_date": "2027-01-09",
+    "document": "",
+    "created_at": "2026-06-05T12:29:40.353Z",
+    "updated_at": "2026-06-05T12:29:40.353Z"
+  }
+},
+{
+  "model": "documents.cartegrise",
+  "pk": 3,
+  "fields": {
+    "vehicle": 3,
+    "registration_number": "IJ-789-KL",
+    "issue_date": "2022-01-20",
+    "expiry_date": null,
+    "document": "",
+    "created_at": "2026-06-05T12:29:40.358Z",
+    "updated_at": "2026-06-05T12:29:40.358Z"
+  }
+},
+{
+  "model": "documents.technicalinspection",
+  "pk": 1,
+  "fields": {
+    "vehicle": 1,
+    "inspection_date": "2025-12-07",
+    "result": "passed",
+    "expiry_date": "2026-11-26",
+    "mileage_at_inspection": 35000,
+    "garage_name": "Autosécurité",
+    "document": "",
+    "notes": "Contrôle favorable",
+    "created_at": "2026-06-05T12:29:40.334Z",
+    "updated_at": "2026-06-05T12:29:40.335Z"
+  }
+},
+{
+  "model": "documents.technicalinspection",
+  "pk": 2,
+  "fields": {
+    "vehicle": 2,
+    "inspection_date": "2025-05-01",
+    "result": "partial",
+    "expiry_date": "2026-05-06",
+    "mileage_at_inspection": 55000,
+    "garage_name": "Sécuritest",
+    "document": "",
+    "notes": "Pneus avant à changer",
+    "created_at": "2026-06-05T12:29:40.339Z",
+    "updated_at": "2026-06-05T12:29:40.339Z"
+  }
+},
+{
+  "model": "documents.technicalinspection",
+  "pk": 3,
+  "fields": {
+    "vehicle": 3,
+    "inspection_date": "2026-03-07",
+    "result": "passed",
+    "expiry_date": "2027-02-04",
+    "mileage_at_inspection": 20000,
+    "garage_name": "Autovision",
+    "document": "",
+    "notes": "OK",
+    "created_at": "2026-06-05T12:29:40.344Z",
+    "updated_at": "2026-06-05T12:29:40.344Z"
+  }
+},
+{
+  "model": "diagnostics.diagnosticreport",
+  "pk": 1,
+  "fields": {
+    "vehicle": 1,
+    "overall_status": "good",
+    "report_date": "2026-06-05T12:29:40.363Z",
+    "mileage": 45000,
+    "oil_change_status": "OK",
+    "inspection_status": "OK",
+    "insurance_status": "OK",
+    "registration_status": "OK",
+    "days_until_next_oil_change": null,
+    "km_until_next_oil_change": null,
+    "days_until_inspection": null,
+    "days_until_insurance_expiry": null,
+    "recommendations": "Aucun problème détecté.",
+    "is_critical": false
+  }
+},
+{
+  "model": "diagnostics.diagnosticreport",
+  "pk": 2,
+  "fields": {
+    "vehicle": 2,
+    "overall_status": "good",
+    "report_date": "2026-06-05T12:29:40.368Z",
+    "mileage": 62000,
+    "oil_change_status": "OK",
+    "inspection_status": "OK",
+    "insurance_status": "OK",
+    "registration_status": "OK",
+    "days_until_next_oil_change": null,
+    "km_until_next_oil_change": null,
+    "days_until_inspection": null,
+    "days_until_insurance_expiry": null,
+    "recommendations": "Aucun problème détecté.",
+    "is_critical": false
+  }
+},
+{
+  "model": "diagnostics.diagnosticreport",
+  "pk": 3,
+  "fields": {
+    "vehicle": 3,
+    "overall_status": "good",
+    "report_date": "2026-06-05T12:29:40.372Z",
+    "mileage": 28000,
+    "oil_change_status": "OK",
+    "inspection_status": "OK",
+    "insurance_status": "OK",
+    "registration_status": "OK",
+    "days_until_next_oil_change": null,
+    "km_until_next_oil_change": null,
+    "days_until_inspection": null,
+    "days_until_insurance_expiry": null,
+    "recommendations": "Aucun problème détecté.",
+    "is_critical": false
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$tNMiRyDIsUhtLrgbIpBHrR$2nfYeEtDNCNTojrhnjnscBSKJWYbjCVoIAB2KifJG2o=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@example.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-04T10:58:12.124Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$corCC02d5whNQADno2Efts$MgsNwcgbA3Tfr9gdU/wsDZT5friR1qXkQWhVkTVC3uA=",
+    "last_login": "2026-06-05T12:20:30.542Z",
+    "is_superuser": true,
+    "username": "fifaliana",
+    "first_name": "",
+    "last_name": "",
+    "email": "andrianadisofifaliana@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-05T12:08:21.241Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$8yGkXNMZSV9zpOZGHTyG6Z$Pp69i7+P4u6Lnl5QrF0Qtc85AT95ilGO3EKz8ld9EGk=",
+    "last_login": "2026-06-05T13:35:10.265Z",
+    "is_superuser": false,
+    "username": "demo",
+    "first_name": "Jean",
+    "last_name": "Dupont",
+    "email": "demo@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-05T12:29:37.342Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "phone": "",
+    "address": "",
+    "avatar": "",
+    "notification_email": true,
+    "created_at": "2026-06-04T10:58:14.277Z",
+    "updated_at": "2026-06-04T10:58:14.281Z"
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "fifaliana"
+    ],
+    "phone": "",
+    "address": "",
+    "avatar": "",
+    "notification_email": true,
+    "created_at": "2026-06-05T12:08:22.973Z",
+    "updated_at": "2026-06-05T12:20:30.549Z"
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "demo"
+    ],
+    "phone": "06 12 34 56 78",
+    "address": "12 Rue de Paris, 75001 Paris",
+    "avatar": "",
+    "notification_email": true,
+    "created_at": "2026-06-05T12:29:40.215Z",
+    "updated_at": "2026-06-05T13:35:10.273Z"
+  }
+},
+{
+  "model": "vehicles.vehicle",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "demo"
+    ],
+    "name": "Clio",
+    "brand": "Renault",
+    "model": "Clio 5",
+    "year": 2021,
+    "vehicle_type": "car",
+    "fuel_type": "gasoline",
+    "vin": "VF1AAAAAA12345678",
+    "registration_number": "AB-123-CD",
+    "mileage": 45000,
+    "photo": "",
+    "purchase_date": "2020-01-08",
+    "is_active": true,
+    "created_at": "2026-06-05T12:29:40.230Z",
+    "updated_at": "2026-06-05T12:29:40.230Z"
+  }
+},
+{
+  "model": "vehicles.vehicle",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "demo"
+    ],
+    "name": "308",
+    "brand": "Peugeot",
+    "model": "308",
+    "year": 2020,
+    "vehicle_type": "van",
+    "fuel_type": "gasoline",
+    "vin": "VF3BBBBBB23456789",
+    "registration_number": "EF-456-GH",
+    "mileage": 62000,
+    "photo": "",
+    "purchase_date": "2019-01-21",
+    "is_active": true,
+    "created_at": "2026-06-05T12:29:40.235Z",
+    "updated_at": "2026-06-05T12:29:40.235Z"
+  }
+},
+{
+  "model": "vehicles.vehicle",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "demo"
+    ],
+    "name": "Golf",
+    "brand": "Volkswagen",
+    "model": "Golf 8",
+    "year": 2022,
+    "vehicle_type": "car",
+    "fuel_type": "gasoline",
+    "vin": "WVWCCCCC34567890",
+    "registration_number": "IJ-789-KL",
+    "mileage": 28000,
+    "photo": "",
+    "purchase_date": "2021-06-26",
+    "is_active": true,
+    "created_at": "2026-06-05T12:29:40.241Z",
+    "updated_at": "2026-06-05T12:29:40.242Z"
+  }
+}
+]

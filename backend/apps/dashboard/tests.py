@@ -3,9 +3,9 @@ from decimal import Decimal
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from vehicles.models import Vehicle
-from maintenance.models import MaintenanceRecord
-from documents.models import Insurance, TechnicalInspection
+from apps.vehicles.models import Vehicle
+from apps.maintenance.models import MaintenanceRecord
+from apps.documents.models import Insurance, TechnicalInspection
 
 
 class DashboardViewsTest(TestCase):

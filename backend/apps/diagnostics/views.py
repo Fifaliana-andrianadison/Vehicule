@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from vehicles.models import Vehicle
-from diagnostics.models import DiagnosticReport
-from diagnostics.utils import get_vehicle_health
+from apps.vehicles.models import Vehicle
+from apps.diagnostics.models import DiagnosticReport
+from apps.diagnostics.utils import get_vehicle_health
 
 
 @login_required

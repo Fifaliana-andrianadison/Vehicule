@@ -2,6 +2,52 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class VehicleType(models.Model):
+    name = models.CharField('Type', max_length=20, unique=True)
+    label = models.CharField('Libellé', max_length=100, blank=True)
+
+    class Meta:
+        verbose_name = 'Type de véhicule (NHTSA)'
+        verbose_name_plural = 'Types de véhicules (NHTSA)'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.label or self.name
+
+
+class Brand(models.Model):
+    name = models.CharField('Marque', max_length=100, unique=True)
+    nhtsa_id = models.IntegerField('ID NHTSA', null=True, blank=True)
+    vehicle_types = models.ManyToManyField(VehicleType, blank=True, related_name='brands')
+
+    class Meta:
+        verbose_name = 'Marque (NHTSA)'
+        verbose_name_plural = 'Marques (NHTSA)'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class VehicleModel(models.Model):
+    name = models.CharField('Modèle', max_length=100)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='models')
+    year = models.IntegerField('Année', null=True, blank=True)
+    vehicle_type = models.ForeignKey(
+        VehicleType, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='models',
+    )
+
+    class Meta:
+        verbose_name = 'Modèle (NHTSA)'
+        verbose_name_plural = 'Modèles (NHTSA)'
+        ordering = ['name']
+        unique_together = ('name', 'brand', 'year', 'vehicle_type')
+
+    def __str__(self):
+        return f"{self.brand.name} {self.name} {self.year or ''}".strip()
+
+
 class Vehicle(models.Model):
     class VehicleType(models.TextChoices):
         CAR = 'car', 'Voiture'
@@ -44,7 +90,7 @@ class Vehicle(models.Model):
         return f"{self.brand} {self.model} ({self.registration_number or 'Sans plaque'})"
 
     def get_health_status(self):
-        from diagnostics.utils import get_vehicle_health
+        from apps.diagnostics.utils import get_vehicle_health
         return get_vehicle_health(self)
 
     def get_last_oil_change(self):

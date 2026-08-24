@@ -4,10 +4,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from vehicles.models import Vehicle
-from maintenance.models import MaintenanceRecord
-from documents.models import TechnicalInspection, Insurance, CarteGrise
-from notifications.models import Reminder, NotificationLog
+from apps.vehicles.models import Vehicle
+from apps.maintenance.models import MaintenanceRecord
+from apps.documents.models import TechnicalInspection, Insurance, CarteGrise
+from apps.notifications.models import Reminder, NotificationLog
 
 
 class Command(BaseCommand):

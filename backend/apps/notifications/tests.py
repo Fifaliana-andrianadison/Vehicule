@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.core.management import call_command
 from django.core import mail
-from vehicles.models import Vehicle
-from maintenance.models import MaintenanceRecord
-from documents.models import Insurance, TechnicalInspection, CarteGrise
-from notifications.models import Reminder, NotificationLog
+from apps.vehicles.models import Vehicle
+from apps.maintenance.models import MaintenanceRecord
+from apps.documents.models import Insurance, TechnicalInspection, CarteGrise
+from apps.notifications.models import Reminder, NotificationLog
 
 
 class ReminderAndNotificationModelTest(TestCase):

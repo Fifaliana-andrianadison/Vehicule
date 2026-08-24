@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from accounts.models import Profile
+from apps.accounts.models import Profile
 
 
 class ProfileModelTest(TestCase):

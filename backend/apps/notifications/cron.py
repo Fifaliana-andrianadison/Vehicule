@@ -4,10 +4,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 from django_cron import CronJobBase, Schedule
-from vehicles.models import Vehicle
-from maintenance.models import MaintenanceRecord
-from documents.models import TechnicalInspection, Insurance
-from notifications.models import Reminder, NotificationLog
+from apps.vehicles.models import Vehicle
+from apps.maintenance.models import MaintenanceRecord
+from apps.documents.models import TechnicalInspection, Insurance
+from apps.notifications.models import Reminder, NotificationLog
 
 
 class SendOilChangeReminders(CronJobBase):
@@ -215,7 +215,7 @@ class SendRegistrationReminders(CronJobBase):
         today = date.today()
         warning_date = today + timedelta(days=90)
 
-        from documents.models import CarteGrise
+        from apps.documents.models import CarteGrise
         cartes = CarteGrise.objects.filter(
             expiry_date__lte=warning_date,
         ).select_related('vehicle__user')

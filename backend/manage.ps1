@@ -4,7 +4,7 @@ param(
 )
 
 $PythonPath = "C:\Users\User1\AppData\Local\Programs\Python\Python312\python.exe"
-$ProjectPath = "D:\vehicule"
+$ProjectPath = "D:\Vehicule\Vehicule\backend"
 
 function Write-Title {
     param([string]$Text)
@@ -46,7 +46,7 @@ switch ($Command.ToLower()) {
     }
     "test" {
         Write-Title "Tests"
-        & $PythonPath manage.py test
+        & $PythonPath manage.py test --settings=config.test_settings
     }
     default {
         Write-Host ""

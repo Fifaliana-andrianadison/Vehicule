@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
 from datetime import date, timedelta
-from vehicles.models import Vehicle
-from maintenance.models import MaintenanceRecord
-from documents.models import Insurance, TechnicalInspection
-from diagnostics.utils import get_vehicle_health
+from apps.vehicles.models import Vehicle
+from apps.maintenance.models import MaintenanceRecord
+from apps.documents.models import Insurance, TechnicalInspection
+from apps.diagnostics.utils import get_vehicle_health
 
 
 @login_required
